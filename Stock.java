@@ -1,7 +1,7 @@
 public class Stock {
 
-    private String stockName;
-    private double price;
+    private final String stockName;
+    private final double price;
 
     public Stock(String stockName, double price) {
         this.stockName = stockName;
