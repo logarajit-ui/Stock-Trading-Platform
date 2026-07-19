@@ -1,8 +1,8 @@
 public class Transaction {
 
-    private String stockName;
-    private int quantity;
-    private String type;
+    private final String stockName;
+    private final int quantity;
+    private final String type;
 
     public Transaction(String stockName, int quantity, String type) {
         this.stockName = stockName;
