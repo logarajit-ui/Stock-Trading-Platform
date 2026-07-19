@@ -1,3 +1,4 @@
+
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -5,114 +6,91 @@ public class Main {
 
     public static void main(String[] args) {
 
-        Scanner sc = new Scanner(System.in);
         HashMap<String, Integer> portfolio = new HashMap<>();
 
-        while (true) {
+        try (Scanner sc = new Scanner(System.in)) {
 
-            System.out.println("\n========== STOCK TRADING PLATFORM ==========");
-            System.out.println("1. View Market Data");
-            System.out.println("2. Buy Stock");
-            System.out.println("3. Sell Stock");
-            System.out.println("4. View Portfolio");
-            System.out.println("5. Exit");
+            int choice;
 
-            System.out.print("Enter your choice: ");
-            int choice = sc.nextInt();
+            do {
+                System.out.println("\n========== STOCK TRADING PLATFORM ==========");
+                System.out.println("1. View Market Data");
+                System.out.println("2. Buy Stock");
+                System.out.println("3. Sell Stock");
+                System.out.println("4. View Portfolio");
+                System.out.println("5. Exit");
+                System.out.print("Enter your choice: ");
 
-            switch (choice) {
+                choice = sc.nextInt();
 
-                case 1:
-                    System.out.println("\n----- MARKET DATA -----");
-                    System.out.println("TCS       : ₹3500");
-                    System.out.println("INFY      : ₹1600");
-                    System.out.println("RELIANCE  : ₹2800");
-                    break;
+                switch (choice) {
 
-                case 2:
+                    case 1 -> {
+                        System.out.println("\nMarket Data:");
+                        System.out.println("TCS   : ₹3500");
+                        System.out.println("INFY  : ₹1500");
+                        System.out.println("WIPRO : ₹500");
+                    }
 
-                    System.out.print("Enter Stock Name: ");
-                    String buyStock = sc.next();
+                    case 2 -> {
+                        System.out.print("Enter stock name: ");
+                        String buyStock = sc.next();
 
-                    System.out.print("Enter Quantity: ");
-                    int buyQty = sc.nextInt();
+                        System.out.print("Enter quantity: ");
+                        int buyQty = sc.nextInt();
 
-                    portfolio.put(buyStock.toUpperCase(),
-                            portfolio.getOrDefault(buyStock.toUpperCase(), 0) + buyQty);
+                        portfolio.put(buyStock,
+                                portfolio.getOrDefault(buyStock, 0) + buyQty);
 
-                    System.out.println("\nStock Purchased Successfully!");
-                    System.out.println("You bought " + buyQty + " shares of " + buyStock.toUpperCase());
+                        System.out.println("Stock Buy Successfully");
+                    }
 
-                    break;
+                    case 3 -> {
+                        System.out.print("Enter stock name: ");
+                        String sellStock = sc.next();
 
-                case 3:
+                        if (portfolio.containsKey(sellStock)) {
 
-                    System.out.print("Enter Stock Name: ");
-                    String sellStock = sc.next();
+                            System.out.print("Enter quantity: ");
+                            int sellQty = sc.nextInt();
 
-                    System.out.print("Enter Quantity: ");
-                    int sellQty = sc.nextInt();
+                            int available = portfolio.get(sellStock);
 
-                    if (portfolio.containsKey(sellStock.toUpperCase())) {
-
-                        int currentQty = portfolio.get(sellStock.toUpperCase());
-
-                        if (currentQty >= sellQty) {
-
-                            portfolio.put(sellStock.toUpperCase(), currentQty - sellQty);
-
-                            if (portfolio.get(sellStock.toUpperCase()) == 0) {
-                                portfolio.remove(sellStock.toUpperCase());
+                            if (sellQty <= available) {
+                                portfolio.put(sellStock, available - sellQty);
+                                System.out.println("Stock Sell Successfully");
+                            } 
+                            else {
+                                System.out.println("Not enough stocks");
                             }
 
-                            System.out.println("Stock Sold Successfully!");
-                            System.out.println("You sold " + sellQty + " shares of " + sellStock.toUpperCase());
-
-                        } else {
-
-                            System.out.println("Not Enough Shares!");
-
+                        } 
+                        else {
+                            System.out.println("Stock not found");
                         }
-
-                    } else {
-
-                        System.out.println("Stock Not Found!");
-
                     }
 
-                    break;
+                    case 4 -> {
+                        System.out.println("\nYour Portfolio:");
 
-                case 4:
-
-                    System.out.println("\n========== YOUR PORTFOLIO ==========");
-
-                    if (portfolio.isEmpty()) {
-
-                        System.out.println("No Stocks Purchased.");
-
-                    } else {
-
-                        for (String stock : portfolio.keySet()) {
-
-                            System.out.println(stock + " : " + portfolio.get(stock) + " Shares");
-
+                        if (portfolio.isEmpty()) {
+                            System.out.println("No Stocks Available");
+                        } 
+                        else {
+                            for (String stock : portfolio.keySet()) {
+                                System.out.println(stock + " : " + portfolio.get(stock));
+                            }
                         }
-
                     }
 
-                    break;
+                    case 5 -> 
+                        System.out.println("Thank You for Trading");
 
-                case 5:
+                    default -> 
+                        System.out.println("Invalid Choice");
+                }
 
-                    System.out.println("Thank You for Using Stock Trading Platform!");
-                    sc.close();
-                    return;
-
-                default:
-
-                    System.out.println("Invalid Choice!");
-
-            }
+            } while (choice != 5);
         }
     }
 }
